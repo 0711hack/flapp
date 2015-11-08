@@ -30,7 +30,7 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:004794452776:function:flapp/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"createFlap\", \"body\": $input.json('$')}"
@@ -67,7 +67,7 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:004794452776:function:flapp/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"createKnock\", \"flapid\": \"$input.params('flapid')\", \"body\": $input.json('$')}"
@@ -96,7 +96,7 @@
         "parameters": [],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:004794452776:function:flapp/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"getKnock\", \"flapid\": \"$input.params('flapid')\", \"knockid\": \"$input.params('knockid')\"}"
@@ -120,7 +120,7 @@
         "parameters": [],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:004794452776:function:flapp/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"declineKnock\", \"flapid\": \"$input.params('flapid')\", \"knockid\": \"$input.params('knockid')\"}"
@@ -144,7 +144,7 @@
         "parameters": [],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:004794452776:function:flapp/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"approveKnock\", \"flapid\": \"$input.params('flapid')\", \"knockid\": \"$input.params('knockid')\"}"
