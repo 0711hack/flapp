@@ -1,0 +1,63 @@
+<resources>
+
+  <!-- CUSTOMIZE THESE FOR YOUR APP -->
+
+  <string name="app_name">flapp</string>
+  <string name="google_cloud_messaging_package">com.mysampleapp</string>
+  
+  <!-- REQUIRED FOR GENERAL APP FUNCTIONALITY - YOU MAY WANT TO KEEP THESE -->
+
+  <string name="main_nav_menu_item_home">Home</string>
+  <string name="title_activity_item_detail">Item Detail</string>
+  <string name="title_activity_item_list">Item List</string>
+  <string name="title_activity_main">@string/app_name</string>
+  <string name="title_activity_sign_in">Sign-in</string>
+  <string name="button_text_sign_in">SIGN IN</string>
+  <string name="button_text_sign_out">SIGN OUT</string>
+  
+  <!-- USED BY DEMO FEATURES ONLY - YOU CAN DISCARD THESE WITH THE DEMO FOLDER -->
+
+  <string name="fragment_demo_instruction_overview_header">Öffner</string>
+  <string name="fragment_demo_instruction_description_header">Letzte Öffnungen</string>
+  <string name="feature_sign_in_title">Katzenklappe</string>
+  <string name="feature_sign_in_subtitle">Zeigt an wann die Katze kommt und wann sie da ist.</string>
+  <string name="feature_sign_in_overview"></string>
+  <string name="feature_sign_in_description">  </string>
+  <string name="feature_sign_in_powered_by">flapps</string>
+  <string name="feature_sign_in_demo_button">Katzenklappe</string>
+  <string name="feature_push_notifications_title">flapp Nachricht</string>
+  <string name="feature_push_notifications_subtitle">Katze an der Klappe</string>
+  <string name="feature_push_notifications_overview">Receive push notifications on your device and subscribe to topics you have created.</string>
+  <string name="feature_push_notifications_description">The Sample App allows you to register to receive push notifications, and it provides checkboxes to demonstrate subscribing to receive messages from your configured Amazon SNS topics.</string>
+  <string name="feature_push_notifications_powered_by">Powered by Amazon SNS</string>
+  <string name="feature_push_notifications_demo_button">Demo Push Notifications</string>
+  <string name="main_nav_menu_item_identity_demo">User Identity</string>
+  <string name="main_fragment_title_user_identity">User Identity</string>
+  <string name="main_fragment_subtitle_user_identity">Keep track of users</string>
+  <string name="identity_demo_text_view_description">Displays the user identity.</string>
+  <string name="unknown_user">Guest User</string>
+  <string name="user_id">USER IDENTIFIER</string>
+  <string name="identity_demo_textview_username_description">User\'s name</string>
+  <string name="identity_demo_textview_userid_description">User\'s unique identifier</string>
+  <string name="identity_demo_unknown_identity_text">&lt;UNKNOWN IDENTITY&gt;</string>
+  <string name="identity_demo_dialog_dismiss_text">DISMISS</string>
+  <string name="identity_demo_error_dialog_title">Failed Identity Retrieval</string>
+  <string name="identity_demo_error_message_failed_get_identity">Could not retrieve the user identity:\u0020</string>
+  <string name="main_nav_menu_item_push_demo">Push Notifications</string>
+  <string name="main_fragment_title_push_notification">Push Notifications</string>
+  <string name="main_fragment_subtitle_push_notification">Engage users with push notifications</string>
+  <string name="push_enable_choice_text">Receive Push Notifications</string>
+  <string name="push_demo_title">flapp</string>
+  <string name="acceptbutton">Öffnen</string>
+  <string name="declinebutton">Geschlossen</string>
+
+  <string name="push_demo_progress_dialog_title">Please wait &#8230;</string>
+  <string name="push_demo_wait_message_register">Registering device for push notification.</string>
+  <string name="push_demo_wait_message_update_notification">Updating push notification status.</string>
+  <string name="push_demo_wait_message_update_subscription">Updating subscription status.</string>
+  <string name="push_demo_error_message_register">Failed to register device due to \'%s\'.</string>
+  <string name="push_demo_error_message_update_notification">Failed to update notification status due to \'%s\'.</string>
+  <string name="push_demo_error_message_update_subscription">Failed to update subscription due to \'%s\'.</string>
+  <string name="push_demo_error_message_google_play_services_unavailable">Push Notifications are disabled because Google Play Services are unavailable on the device.</string>
+  <string name="push_demo_confirm_message_unsubscribe">Do you want to unsubscribe from \'%s\'.</string>
+</resources>
