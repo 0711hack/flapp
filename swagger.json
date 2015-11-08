@@ -47,6 +47,14 @@
       } 
     },
     "/flap/{flapid}/knock": {
+      "parameters": [{
+        "name": "flapid",
+        "in": "path",
+        "description": "ID of flap",
+        "required": true,
+        "default": "",
+        "type": "string"
+      }],
       "post": {
         "responses": {
           "201": {
@@ -64,13 +72,6 @@
           "schema": {
             "$ref":"#/definitions/CreateKnock"
           }
-        }, {
-          "name": "flapid",
-          "in": "path",
-          "description": "ID of flap",
-          "required": true,
-          "default": "",
-          "type": "string"
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
@@ -91,6 +92,21 @@
       }
     },
     "/flap/{flapid}/knock/{knockid}": {
+      "parameters": [{
+        "name": "flapid",
+        "in": "path",
+        "description": "ID of flap",
+        "required": true,
+        "default": "",
+        "type": "string"
+      }, {
+        "name": "knockid",
+        "in": "path",
+        "description": "ID of knock",
+        "required": true,
+        "default": "",
+        "type": "string"
+      }],
       "get": {
         "responses": {
           "200": {
@@ -100,21 +116,7 @@
             }
           }
         },
-        "parameters": [{
-          "name": "flapid",
-          "in": "path",
-          "description": "ID of flap",
-          "required": true,
-          "default": "",
-          "type": "string"
-        }, {
-          "name": "knockid",
-          "in": "path",
-          "description": "ID of knock",
-          "required": true,
-          "default": "",
-          "type": "string"
-        }],
+        "parameters": [],
         "x-amazon-apigateway-integration": {
           "type": "aws",
           "uri": "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:004794452776:function:flapp/invocations",
