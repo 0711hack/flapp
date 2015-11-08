@@ -25,6 +25,8 @@ var apiClient = restify.createJsonClient({
     version: '*'
 });
 
+
+
 ipcon.connect(HOST, PORT,
     function (error) {
         console.log('Error: ' + error);
