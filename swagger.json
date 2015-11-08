@@ -1,0 +1,158 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Flapp",
+    "version": "1.0.0"
+  },
+  "basePath": "/v1",
+  "schemes": ["https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/flap": {
+      "post": {
+        "responses": {
+          "201": {
+            "description": "flap created",
+            "schema": {
+              "$ref": "#/definitions/Flap"
+            }
+          }
+        },
+        "parameters": [{
+          "name": "body",
+          "in": "body",
+          "description": "body object",
+          "required": true,
+          "schema": {
+            "$ref":"#/definitions/CreateFlap"
+          }
+        }],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"createFlap\", \"body\": $input.json('$')}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "201",
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')"
+              }
+            } 
+          }
+        }
+      } 
+    },
+    "/flap/{flapid}/knock": {
+      "post": {
+        "responses": {
+          "201": {
+            "description": "knock created",
+            "schema": {
+              "$ref": "#/definitions/Knock"
+            }
+          }
+        },
+        "parameters": [{
+          "name": "body",
+          "in": "body",
+          "description": "body object",
+          "required": true,
+          "schema": {
+            "$ref":"#/definitions/CreateKnock"
+          }
+        }],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"createKnock\", \"flapid\": \"$input.params('flapid')\", \"body\": $input.json('$')}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "201",
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')"
+              }
+            } 
+          }
+        }
+      }
+    },
+    "/flap/{flapid}/knock/{knockid}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Knock retrieved",
+            "schema": {
+              "$ref": "#/definitions/Knock"
+            }
+          }
+        },
+        "parameters": [],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"getKnock\", \"flapid\": \"$input.params('flapid')\", \"knockid\": \"$input.params('knockid')\"}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')"
+              }
+            } 
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreateFlap": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+      },
+      "required": []
+    },
+    "Flap": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "uid": {
+          "type": "string"
+        }
+      },
+      "required": ["uid"]
+    },
+    "CreateKnock": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "image": {
+          "type": "string"
+        }
+      },
+      "required": ["image"]
+    },
+    "Knock": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "flap": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "number"
+        }
+      },
+      "required": ["flap", "timestamp"]
+    }
+  }
+}

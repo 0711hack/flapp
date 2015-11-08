@@ -75,7 +75,7 @@ function getKnock(event, context) {
         if (err) {
             context.fail(err);
         } else {
-            context.succeed(data.Items); // TODO
+            context.succeed({body: data.Items}); // TODO
         }
     });
 }
