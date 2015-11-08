@@ -118,9 +118,7 @@ ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED,
         servo.setPulseWidth(0, 1000, 2500);
 
         motionDetector.on(Tinkerforge.BrickletMotionDetector.CALLBACK_MOTION_DETECTED, function () {
-            beepTimeout = setTimeout(function(){
-                beep();
-            }, 10000);
+            // TODO
         });
 
         nfcRFID.requestTagID(Tinkerforge.BrickletNFCRFID.TAG_TYPE_TYPE2);
@@ -133,8 +131,6 @@ servo.on(Tinkerforge.BrickServo.CALLBACK_POSITION_REACHED,
             setTimeout(function() {
                 closeDoor();
             }, 5000);
-        } else if (position === -9000) {
-            servo.disable(servoNum);
         }
     }
 );
