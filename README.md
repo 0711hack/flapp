@@ -19,5 +19,24 @@ $ aws lambda add-permission --function-name arn:aws:lambda:eu-west-1:00479445277
 create flap
 
 ```
-$ curl -vvv -X POST -H "Content-Type: application/json" -d '{}'  https://1rzcudhqjl.execute-api.eu-west-1.amazonaws.com/dev/v1/flap
+$ curl -vvv -X POST https://1rzcudhqjl.execute-api.eu-west-1.amazonaws.com/dev/v1/flap
 ```
+
+create a knock
+
+```
+$ curl -vvv -X POST -H "Content-Type: application/json" -d '{"image": "test"}'  https://1rzcudhqjl.execute-api.eu-west-1.amazonaws.com/dev/v1/flap/f4835756-7ad4-4b03-9334-04f327785d71/knock
+```
+
+approve knock
+
+```
+$ curl -vvv -X PUT https://1rzcudhqjl.execute-api.eu-west-1.amazonaws.com/dev/v1/flap/f4835756-7ad4-4b03-9334-04f327785d71/knock/1446974285783
+```
+
+decline knock
+
+```
+$ curl -vvv -X DELETE https://1rzcudhqjl.execute-api.eu-west-1.amazonaws.com/dev/v1/flap/f4835756-7ad4-4b03-9334-04f327785d71/knock/1446974285783
+```
+
