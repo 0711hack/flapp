@@ -16,16 +16,18 @@ var motionDetector = new Tinkerforge.BrickletMotionDetector("sKj", ipcon);
 var servo = new Tinkerforge.BrickServo("6kM6oJ", ipcon);
 var nfcRFID = new Tinkerforge.BrickletNFCRFID("uw2", ipcon);
 
-var isNotMyCat = false;
-
 var tagType = 0;
+
+var FLAP_ID = "10a677fb-6847-4596-95a7-325d3ffe7077";
+
+var lastKnock = 0;
 
 var apiClient = restify.createJsonClient({
     url: 'https://1rzcudhqjl.execute-api.eu-west-1.amazonaws.com:443',
     version: '*'
 });
 
-
+var beepTimeout;
 
 ipcon.connect(HOST, PORT,
     function (error) {
@@ -35,7 +37,7 @@ ipcon.connect(HOST, PORT,
 // Don't use device before ipcon is connected
 
 function uploadImageToS3() {
-    var id = uuid.v4();
+    var id = uuid.v4() + ".jpg";
     exec("fswebcam -c /home/tf/webcam.conf --save=/tmp/flapp.jpg", function (error, stdout, stderr) {
         if (error !== null) {
             console.log('exec error: ' + error);
@@ -46,7 +48,8 @@ function uploadImageToS3() {
                 var params = {
                     Bucket: '0711hack-flapp', 
                     Key: id,
-                    Body: data
+                    Body: data,
+                    ACL: "public-read"
                 };
                 s3.putObject(params, function(err, data) {
                     console.log(err, data);
@@ -58,12 +61,15 @@ function uploadImageToS3() {
 }
 
 function createKnock(flap, imageId) {
-    apiClient.post('/dev/v1/flap/' + flap + '/knock', {"image": imageId}, function(err, req, res, obj) {
-        console.log("CREATE KNOCK");
-        console.log('%d -> %j', res.statusCode, res.headers);
-        console.log('%j', obj);
-        checkKnock(obj.flap, obj.id, 0)
-    });
+    if (lastKnock < (Date.now() - (1000*60))) {
+        lastKnock = Date.now();
+        apiClient.post('/dev/v1/flap/' + flap + '/knock', {"image": imageId}, function(err, req, res, obj) {
+            console.log("CREATE KNOCK");
+            console.log('%d -> %j', res.statusCode, res.headers);
+            console.log('%j', obj);
+            checkKnock(obj.flap, obj.id, 0)
+        });
+    }
 }
 
 function checkKnock(flap, knock, checks) {
@@ -86,7 +92,7 @@ function checkKnock(flap, knock, checks) {
 }
 
 function beep() {
-    piezo.beep(2000, 1000);
+    piezo.beep(1000, 1000);
 }
 
 function openDoor() {
@@ -107,13 +113,9 @@ ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED,
         servo.setPulseWidth(0, 1000, 2500);
 
         motionDetector.on(Tinkerforge.BrickletMotionDetector.CALLBACK_MOTION_DETECTED, function () {
-            isNotMyCat = true;
-            setTimeout(function(){
-                if(isNotMyCat === true) {
-                    beep();
-                }
-                isNotMyCat = false;
-            }, 5000);
+            beepTimeout = setTimeout(function(){
+                beep();
+            }, 10000);
         });
 
         nfcRFID.requestTagID(Tinkerforge.BrickletNFCRFID.TAG_TYPE_TYPE2);
@@ -144,8 +146,8 @@ nfcRFID.on(Tinkerforge.BrickletNFCRFID.CALLBACK_STATE_CHANGED,
                 function (tagType, tidLength, tid) {
                     // our cat 4, 6, 6, 90, 100, 52, 133
                     if (tid[0] === 4 && tid[1] === 6 && tid[2] === 6 && tid[3] === 90 && tid[4] === 100 && tid[5] === 52 && tid[6] === 133) {
-                        isNotMyCat = false;
-                        createKnock("10a677fb-6847-4596-95a7-325d3ffe7077", uploadImageToS3());
+                        clearTimeout(beepTimeout)
+                        createKnock(FLAP_ID, uploadImageToS3());
                     }
                 },
                 function (error) {
