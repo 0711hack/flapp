@@ -64,7 +64,7 @@ function uploadImageToS3(cb) {
 }
 
 function createKnock(flap) {
-    if (lastKnock < (Date.now() - (1000*60))) {
+    if (lastKnock < (Date.now() - (1000*30))) {
         lastKnock = Date.now();
         uploadImageToS3(function(imageId) {
             apiClient.post('/dev/v1/flap/' + flap + '/knock', {"image": imageId}, function(err, req, res, obj) {
