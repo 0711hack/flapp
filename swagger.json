@@ -110,6 +110,54 @@
             } 
           }
         }
+      },
+      "delete": {
+        "responses": {
+          "204": {
+            "description": "Knock declined"
+          }
+        },
+        "parameters": [],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"declineKnock\", \"flapid\": \"$input.params('flapid')\", \"knockid\": \"$input.params('knockid')\"}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "204",
+              "responseTemplates": {
+                "application/json": "{}"
+              }
+            } 
+          }
+        }
+      },
+      "put": {
+        "responses": {
+          "204": {
+            "description": "Knock approved"
+          }
+        },
+        "parameters": [],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"approveKnock\", \"flapid\": \"$input.params('flapid')\", \"knockid\": \"$input.params('knockid')\"}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "204",
+              "responseTemplates": {
+                "application/json": "{}"
+              }
+            } 
+          }
+        }
       }
     }
   },
@@ -145,14 +193,20 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "flap": {
+        "id": {
           "type": "string"
         },
-        "timestamp": {
-          "type": "number"
+        "image": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "flap": {
+          "type": "string"
         }
       },
-      "required": ["flap", "timestamp"]
+      "required": ["id", "image", "state", "flap"]
     }
   }
 }
