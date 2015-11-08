@@ -15,6 +15,8 @@ var motionDetector = new Tinkerforge.BrickletMotionDetector("sKj", ipcon);
 var servo = new Tinkerforge.BrickServo("6kM6oJ", ipcon);
 var nfcRFID = new Tinkerforge.BrickletNFCRFID("uw2", ipcon);
 
+var isNotMyCat = false;
+
 var tagType = 0;
 
 ipcon.connect(HOST, PORT,
@@ -58,7 +60,7 @@ function createKnock(imageId) {
             'Content-Length': postData.length
         }
     };
-    
+
     var req = https.request(options, function(res) {
         console.log('STATUS: ' + res.statusCode);
         console.log('HEADERS: ' + JSON.stringify(res.headers));
@@ -67,8 +69,8 @@ function createKnock(imageId) {
             console.log('BODY: ' + chunk);
         });
         res.on('end', function() {
-            console.log('No more data in response.')
-        })
+            console.log('No more data in response.');
+        });
     });
 
     req.on('error', function(e) {
@@ -88,7 +90,14 @@ ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED,
         servo.setPulseWidth(0, 1000, 2500);
 
         motionDetector.on(Tinkerforge.BrickletMotionDetector.CALLBACK_MOTION_DETECTED, function () {
-            piezo.beep(2000, 1000);
+            isNotMyCat = true;
+            setTimeout(function(){
+                if(isNotMyCat === true) {
+                    piezo.beep(2000, 1000);
+                }
+                isNotMyCat = false;
+            }, 5000);
+            //piezo.beep(2000, 1000);
         });
 
         nfcRFID.requestTagID(Tinkerforge.BrickletNFCRFID.TAG_TYPE_TYPE2);
@@ -103,7 +112,7 @@ servo.on(Tinkerforge.BrickServo.CALLBACK_POSITION_REACHED,
                 servo.setPosition(0, -9000);
                 servo.enable(0);
                 createKnock(uploadImageToS3());
-            }, 5000)
+            }, 5000);
         } else if (position === -9000) {
             servo.disable(servoNum);
         }
@@ -121,10 +130,11 @@ nfcRFID.on(Tinkerforge.BrickletNFCRFID.CALLBACK_STATE_CHANGED,
         if(state == Tinkerforge.BrickletNFCRFID.STATE_REQUEST_TAG_ID_READY) {
             nfcRFID.getTagID(
                 function (tagType, tidLength, tid) {
-                    // our cat 4, 6, 6, 90, 100, 52, 133 
+                    // our cat 4, 6, 6, 90, 100, 52, 133
                     if (tid[0] === 4 && tid[1] === 6 && tid[2] === 6 && tid[3] === 90 && tid[4] === 100 && tid[5] === 52 && tid[6] === 133) {
+                        isNotMyCat = false;
                         servo.setPosition(0, 9000);
-                        servo.enable(0);    
+                        servo.enable(0);
                     } else {
                         piezo.beep(2000, 2000);
                     }
@@ -133,7 +143,7 @@ nfcRFID.on(Tinkerforge.BrickletNFCRFID.CALLBACK_STATE_CHANGED,
                 function (error) {
                     console.log('Error: ' + error);
                 }
-            )
+            );
         }
     }
 );
