@@ -36,28 +36,32 @@ ipcon.connect(HOST, PORT,
 ); // Connect to brickd
 // Don't use device before ipcon is connected
 
-function uploadImageToS3() {
+function uploadImageToS3(cb) {
     var id = uuid.v4() + ".jpg";
-    exec("fswebcam -c /home/tf/webcam.conf --save=/tmp/flapp.jpg", function (error, stdout, stderr) {
+    exec("fswebcam -c /home/tf/webcam.conf --save=/tmp/" + id, function (error, stdout, stderr) {
+        console.log(stdout.toString("utf8"));
+        console.log(stderr.toString("utf8"));
         if (error !== null) {
             console.log('exec error: ' + error);
         } else {
-            fs.readFile('/tmp/flapp.jpg', function (err, data) {
+
+            fs.readFile('/tmp/' + id, function (err, data) {
                 if (err) throw err;
                 console.log(data);
                 var params = {
                     Bucket: '0711hack-flapp', 
                     Key: id,
                     Body: data,
-                    ACL: "public-read"
+                    ACL: "public-read",
+                    ContentType: "image/jpeg"
                 };
                 s3.putObject(params, function(err, data) {
                     console.log(err, data);
+                    cb(id);
                 });
             });
         }
     });
-    return id;
 }
 
 function createKnock(flap, imageId) {
@@ -147,7 +151,9 @@ nfcRFID.on(Tinkerforge.BrickletNFCRFID.CALLBACK_STATE_CHANGED,
                     // our cat 4, 6, 6, 90, 100, 52, 133
                     if (tid[0] === 4 && tid[1] === 6 && tid[2] === 6 && tid[3] === 90 && tid[4] === 100 && tid[5] === 52 && tid[6] === 133) {
                         clearTimeout(beepTimeout)
-                        createKnock(FLAP_ID, uploadImageToS3());
+                        uploadImageToS3(function(imageId) {
+                            createKnock(FLAP_ID, imageId);
+                        });
                     }
                 },
                 function (error) {
