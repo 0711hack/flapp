@@ -30,7 +30,7 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "uri": "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:004794452776:function:flapp/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"createFlap\", \"body\": $input.json('$')}"
@@ -64,10 +64,17 @@
           "schema": {
             "$ref":"#/definitions/CreateKnock"
           }
+          }, {
+          "name": "flapid",
+          "in": "path",
+          "description": "ID of flap",
+          "required": true,
+          "default": "",
+          "type": "string"
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "uri": "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:004794452776:function:flapp/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"createKnock\", \"flapid\": \"$input.params('flapid')\", \"body\": $input.json('$')}"
@@ -93,10 +100,24 @@
             }
           }
         },
-        "parameters": [],
+        "parameters": [{
+          "name": "flapid",
+          "in": "path",
+          "description": "ID of flap",
+          "required": true,
+          "default": "",
+          "type": "string"
+        }, {
+          "name": "knockid",
+          "in": "path",
+          "description": "ID of knock",
+          "required": true,
+          "default": "",
+          "type": "string"
+        }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+          "uri": "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:004794452776:function:flapp/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"getKnock\", \"flapid\": \"$input.params('flapid')\", \"knockid\": \"$input.params('knockid')\"}"
@@ -106,6 +127,82 @@
               "statusCode": "200",
               "responseTemplates": {
                 "application/json": "$input.json('$.body')"
+              }
+            } 
+          }
+        }
+      },
+      "delete": {
+        "responses": {
+          "204": {
+            "description": "Knock declined"
+          }
+        },
+        "parameters": [{
+          "name": "flapid",
+          "in": "path",
+          "description": "ID of flap",
+          "required": true,
+          "default": "",
+          "type": "string"
+        }, {
+          "name": "knockid",
+          "in": "path",
+          "description": "ID of knock",
+          "required": true,
+          "default": "",
+          "type": "string"
+        }],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:004794452776:function:flapp/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"declineKnock\", \"flapid\": \"$input.params('flapid')\", \"knockid\": \"$input.params('knockid')\"}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "204",
+              "responseTemplates": {
+                "application/json": "{}"
+              }
+            } 
+          }
+        }
+      },
+      "put": {
+        "responses": {
+          "204": {
+            "description": "Knock approved"
+          }
+        },
+        "parameters": [{
+          "name": "flapid",
+          "in": "path",
+          "description": "ID of flap",
+          "required": true,
+          "default": "",
+          "type": "string"
+        }, {
+          "name": "knockid",
+          "in": "path",
+          "description": "ID of knock",
+          "required": true,
+          "default": "",
+          "type": "string"
+        }],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:004794452776:function:flapp/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"approveKnock\", \"flapid\": \"$input.params('flapid')\", \"knockid\": \"$input.params('knockid')\"}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "204",
+              "responseTemplates": {
+                "application/json": "{}"
               }
             } 
           }
@@ -145,14 +242,20 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "flap": {
+        "id": {
           "type": "string"
         },
-        "timestamp": {
-          "type": "number"
+        "image": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "flap": {
+          "type": "string"
         }
       },
-      "required": ["flap", "timestamp"]
+      "required": ["id", "image", "state", "flap"]
     }
   }
 }

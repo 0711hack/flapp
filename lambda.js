@@ -59,7 +59,7 @@ function createKnock(event, context) {
             if (err) {
                 context.fail(err);
             } else {
-                context.succeed({"body": {"flap": flap, "id": id}});
+                context.succeed({"body": mapKnockItem(params.Item)});
             }
         });    
     });
